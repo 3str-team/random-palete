@@ -23,26 +23,19 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
     event.stopPropagation();
   };
 
-  const setRandomColor = () => {
+  const setColor = (color) => {
     if (isLock) return;
-    const color = generateRandomColor();
-    if (getBrightness(color) <= 0.5) {
-      setLightText(true);
-    } else {
-      setLightText(false);
-    }
+    console.log(isLightText);
+    setLightText(getBrightness(color) <= 0.5);
     setColumnBackground(color);
   };
 
+  const setRandomColor = () => {
+    setColor(generateRandomColor());
+  };
+
   useEffect(() => {
-    if (!isLock) {
-      if (getBrightness(background) <= 0.5) {
-        setLightText(true);
-      } else {
-        setLightText(false);
-      }
-      setColumnBackground(background);
-    }
+    setColor(background);
   }, [background]);
 
   return (
