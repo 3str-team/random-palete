@@ -1,11 +1,13 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { getBrightness } from "../../helpers/color";
 import styles from "./Column.module.scss";
 
 const Column = ({ background = "#ffffff", generateRandomColor }) => {
   const [isLock, setLock] = useState(false);
   const [columnBackground, setColumnBackground] = useState(background);
+  const [isLightText, setLightText] = useState(true);
 
   const lockToggle = (event) => {
     setLock(!isLock);
@@ -23,11 +25,22 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
 
   const setRandomColor = () => {
     if (isLock) return;
-    setColumnBackground(generateRandomColor());
+    const color = generateRandomColor();
+    if (getBrightness(color) <= 0.5) {
+      setLightText(true);
+    } else {
+      setLightText(false);
+    }
+    setColumnBackground(color);
   };
 
   useEffect(() => {
     if (!isLock) {
+      if (getBrightness(background) <= 0.5) {
+        setLightText(true);
+      } else {
+        setLightText(false);
+      }
       setColumnBackground(background);
     }
   }, [background]);
@@ -38,11 +51,19 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
       style={{ background: columnBackground }}
       onClick={setRandomColor}
     >
-      <h2 className={styles.colorName} onClick={copyColor}>
+      <h2
+        className={styles.colorName}
+        onClick={copyColor}
+        style={{ color: isLightText ? "white" : "black" }}
+      >
         {columnBackground}
       </h2>
 
-      <button onClick={lockToggle} className={styles.lockBtn}>
+      <button
+        onClick={lockToggle}
+        className={styles.lockBtn}
+        style={{ color: isLightText ? "white" : "black" }}
+      >
         {isLock ? (
           <i className="bx bxs-lock-alt"></i>
         ) : (
