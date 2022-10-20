@@ -1,0 +1,15 @@
+.refresh {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border: none;
+  background: rgb(241, 244, 230);
+  font-size: 35px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+}
