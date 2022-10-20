@@ -4,6 +4,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body,
@@ -22,4 +23,10 @@ html,
 .copied::before {
   opacity: 1;
   transition: all 0.1s;
+}
+
+@media (max-width: 870px) {
+  .App {
+    flex-direction: column;
+  }
 }
