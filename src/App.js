@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import Column from "./components/Column/Column";
 import RefreshButton from "./components/RefreshButton/RefreshButton";
-import { generateRandomColor } from "./helpers/color";
+import { generateRandomColor, mixColors } from "./helpers/color";
 import "./styles/app.scss";
 
 function App() {
   const [colors, setColors] = useState([
-    "#ffffff",
-    "#ffffff",
-    "#ffffff",
-    "#ffffff",
-    "#ffffff",
+    "#ff0000",
+    "#0000ff",
+    generateRandomColor(),
+    generateRandomColor(),
+    generateRandomColor(),
   ]);
 
   const updateColors = () => {
@@ -18,6 +18,23 @@ function App() {
       return generateRandomColor();
     });
     setColors(newColors);
+  };
+
+  const addColor = (color) => {
+    setColors([...colors, color]);
+  };
+
+  const [mergingColors, setMergingColors] = useState([]);
+
+  const mergeColors = (color) => {
+    if (!mergingColors.length) {
+      setMergingColors([color]);
+      return;
+    }
+    if (mergingColors[0] === color) return;
+    addColor(mixColors(color, mergingColors[0]));
+    setMergingColors([]);
+    return;
   };
 
   return (
@@ -28,6 +45,7 @@ function App() {
             key={index}
             background={color}
             generateRandomColor={generateRandomColor}
+            mergeColors={mergeColors}
           />
         );
       })}

@@ -4,10 +4,13 @@ import { useState } from "react";
 import { getBrightness } from "../../helpers/color";
 import styles from "./Column.module.scss";
 
-const Column = ({ background = "#ffffff", generateRandomColor }) => {
+const Column = ({
+  background = "#ffffff",
+  generateRandomColor,
+  mergeColors,
+}) => {
   const [isLock, setLock] = useState(false);
   const [columnBackground, setColumnBackground] = useState(background);
-  const [isLightText, setLightText] = useState(true);
 
   const lockToggle = (event) => {
     setLock(!isLock);
@@ -25,7 +28,6 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
 
   const setColor = (color) => {
     if (isLock) return;
-    setLightText(getBrightness(color) <= 0.5);
     setColumnBackground(color);
   };
 
@@ -37,12 +39,32 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
     setColor(background);
   }, [background]);
 
+  const functionBtns = [
+    {
+      id: 1,
+      icon: isLock ? (
+        <i className="bx bxs-lock-alt"></i>
+      ) : (
+        <i className="bx bxs-lock-open-alt"></i>
+      ),
+      func: lockToggle,
+    },
+    {
+      id: 2,
+      icon: <i className="bx bxs-add-to-queue"></i>,
+      func: (event) => {
+        mergeColors(columnBackground);
+        event.stopPropagation();
+      },
+    },
+  ];
+
   return (
     <div
       className={styles.column}
       style={{
         background: columnBackground,
-        color: isLightText ? "white" : "black",
+        color: getBrightness(columnBackground) <= 0.5 ? "white" : "black",
       }}
       onClick={setRandomColor}
     >
@@ -50,13 +72,17 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
         {columnBackground}
       </h2>
 
-      <button onClick={lockToggle} className={styles.lockBtn}>
-        {isLock ? (
-          <i className="bx bxs-lock-alt"></i>
-        ) : (
-          <i className="bx bxs-lock-open-alt"></i>
-        )}
-      </button>
+      <ul className={styles.menu}>
+        {functionBtns.map((btn) => {
+          return (
+            <li key={btn.id} className={styles.functionBtnWrapper}>
+              <span className={styles.functionBtn} onClick={btn.func}>
+                {btn.icon}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };

@@ -1,3 +1,9 @@
+@mixin selectable {
+  background: transparent;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
 .column {
   position: relative;
   flex: 1;
@@ -5,13 +11,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  overflow: hidden;
 
   .colorName {
     letter-spacing: 3px;
     cursor: pointer;
     padding: 6px 12px;
-    border-radius: 10px;
-    transition: background 0.2s;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Chrome/Safari/Opera */
     -khtml-user-select: none; /* Konqueror */
@@ -19,21 +24,29 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
     font-size: 20px;
-  }
 
-  .lockBtn {
-    background: transparent;
-    border: none;
-    font-size: 25px;
-    cursor: pointer;
-    padding: 8px 8px 6px 8px;
-    border-radius: 10px;
-    transition: background 0.2s;
-    color: inherit;
+    @include selectable();
   }
 
   .lockBtn:hover,
   .colorName:hover {
+    background: rgba($color: #000000, $alpha: 0.2);
+  }
+
+  .menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .functionBtn {
+      font-size: 25px;
+      cursor: pointer;
+      padding: 8px 8px 4px 8px;
+      @include selectable();
+    }
+  }
+
+  .functionBtn:hover {
     background: rgba($color: #000000, $alpha: 0.2);
   }
 }
@@ -41,18 +54,17 @@
 .column::before {
   content: "Copied";
   position: absolute;
-  top: calc(50% + 10px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 6px 12px;
-  font-size: 14px;
+  top: -100%;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
   letter-spacing: normal;
   color: white;
   background: rgba($color: #000000, $alpha: 0.3);
   border-radius: 5px;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1s;
+  text-align: center;
+  transition: top 1.2s;
 }
 
 @media (max-width: 870px) {
