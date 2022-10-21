@@ -15,6 +15,5 @@ export const getBrightness = (color) => {
     parseInt(color[3] + color[4], 16),
     parseInt(color[5] + color[6], 16),
   ];
-  console.log(rgb, (rgb[0] * 0.21 + rgb[1] * 0.72 + rgb[2] * 0.07) / 255);
   return (rgb[0] * 0.21 + rgb[1] * 0.72 + rgb[2] * 0.07) / 255;
 };

@@ -25,7 +25,6 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
 
   const setColor = (color) => {
     if (isLock) return;
-    console.log(isLightText);
     setLightText(getBrightness(color) <= 0.5);
     setColumnBackground(color);
   };
@@ -41,22 +40,17 @@ const Column = ({ background = "#ffffff", generateRandomColor }) => {
   return (
     <div
       className={styles.column}
-      style={{ background: columnBackground }}
+      style={{
+        background: columnBackground,
+        color: isLightText ? "white" : "black",
+      }}
       onClick={setRandomColor}
     >
-      <h2
-        className={styles.colorName}
-        onClick={copyColor}
-        style={{ color: isLightText ? "white" : "black" }}
-      >
+      <h2 className={styles.colorName} onClick={copyColor}>
         {columnBackground}
       </h2>
 
-      <button
-        onClick={lockToggle}
-        className={styles.lockBtn}
-        style={{ color: isLightText ? "white" : "black" }}
-      >
+      <button onClick={lockToggle} className={styles.lockBtn}>
         {isLock ? (
           <i className="bx bxs-lock-alt"></i>
         ) : (
