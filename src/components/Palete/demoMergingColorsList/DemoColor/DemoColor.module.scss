@@ -1,7 +1,43 @@
 .demo {
+  position: relative;
   width: 50px;
   height: 50px;
   border-radius: 10px;
   opacity: 1;
   box-shadow: 0 0 15px rgba($color: #000000, $alpha: 0.15);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.demo::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba($color: #000000, $alpha: 0.3);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.demo::after {
+  content: "×";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 70px;
+  color: rgb(232, 79, 79);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.demo:hover::after {
+  opacity: 1;
+  transition: opacity 0.1s;
+}
+
+.demo:hover::before {
+  opacity: 1;
+  transition: opacity 0.2s;
 }

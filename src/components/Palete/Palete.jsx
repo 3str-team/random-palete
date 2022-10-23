@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Column from "../Column/Column";
 import { generateRandomColor, mixColors } from "../../helpers/color";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./Palete.module.scss";
 import DemoColorsList from "./demoMergingColorsList/DemoColorsList";
 import MergeButton from "./demoMergingColorsList/MergeButton/MergeButton";
+import RefreshButton from "../RefreshButton/RefreshButton";
+import styles from "./Palete.module.scss";
 
 const Palete = () => {
   const [colors, setColors] = useState([
@@ -16,12 +17,12 @@ const Palete = () => {
   ]);
   const [mergingColors, setMergingColors] = useState([]);
 
-  // const updateColors = () => {
-  //   let newColors = colors.map((color) => {
-  //     return { id: color.id, hex: generateRandomColor() };
-  //   });
-  //   setColors(newColors);
-  // };
+  const updateColors = () => {
+    let newColors = colors.map((color) => {
+      return { id: color.id, hex: generateRandomColor() };
+    });
+    setColors(newColors);
+  };
 
   const addColor = (color) => {
     setColors([...colors, { id: uuidv4(), hex: color }]);
@@ -62,9 +63,9 @@ const Palete = () => {
       <div className={styles.tools}>
         <div
           className={styles.merge}
-          style={{ display: mergingColors.length ? "flex" : "none" }}
+          style={{ opacity: mergingColors.length ? "1" : "0" }}
         >
-          <DemoColorsList colors={mergingColors} />
+          <DemoColorsList colorsState={[mergingColors, setMergingColors]} />
           {mergingColors.length ? (
             <MergeButton
               mergeColorsFunc={mergeColors}
@@ -74,8 +75,10 @@ const Palete = () => {
             ""
           )}
         </div>
+        <div className={styles.buttons}>
+          <RefreshButton updateColors={updateColors} />
+        </div>
       </div>
-      {/* <RefreshButton updateColors={updateColors} /> */}
     </div>
   );
 };

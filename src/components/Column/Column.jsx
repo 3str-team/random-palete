@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getBrightness, getColorById } from "../../helpers/color";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./Column.module.scss";
+import { useEffect } from "react";
 
 const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
   const [colors, setColors] = colorsState;
@@ -32,6 +33,10 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
   const setRandomColor = () => {
     setColor({ id: uuidv4(), hex: generateRandomColor() });
   };
+
+  useEffect(() => {
+    setColor(getColorById(colors, id));
+  }, [getColorById(colors, id)]);
 
   const functionBtns = [
     {
