@@ -22,13 +22,17 @@ export const getBrightness = (color) => {
   return (rgb[0] * 0.21 + rgb[1] * 0.72 + rgb[2] * 0.07) / 255;
 };
 
-export const mixColors = (color1, color2) => {
-  const rgb1 = hexToRGB(color1);
-  const rgb2 = hexToRGB(color2);
+export const mixColors = (colors) => {
+  const rgb = [0, 0, 0];
+  colors.forEach((color) => {
+    rgb[0] += hexToRGB(color.hex)[0] / colors.length;
+    rgb[1] += hexToRGB(color.hex)[1] / colors.length;
+    rgb[2] += hexToRGB(color.hex)[2] / colors.length;
+  });
   const resultHEX = [
-    Math.round((rgb1[0] + rgb2[0]) / 2).toString(16),
-    Math.round((rgb1[1] + rgb2[1]) / 2).toString(16),
-    Math.round((rgb1[2] + rgb2[2]) / 2).toString(16),
+    Math.round(rgb[0]).toString(16),
+    Math.round(rgb[1]).toString(16),
+    Math.round(rgb[2]).toString(16),
   ];
   const result =
     "#" +
@@ -38,6 +42,15 @@ export const mixColors = (color1, color2) => {
     resultHEX[1] +
     (resultHEX[2].length > 1 ? "" : "0") +
     resultHEX[2];
-  console.log(rgb1, rgb2, resultHEX, result);
+  console.log(rgb, resultHEX, result);
   return result;
+};
+
+export const getColorById = (colors, id) => {
+  for (const color of colors) {
+    if (color.id === id) {
+      return color;
+    }
+  }
+  return null;
 };

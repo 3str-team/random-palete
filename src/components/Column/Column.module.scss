@@ -12,6 +12,10 @@
   align-items: center;
   justify-content: space-around;
   overflow: hidden;
+  box-shadow: 0 0 15px rgba($color: #000000, $alpha: 0.15);
+  border-radius: 20px;
+  min-width: 160px;
+  min-height: 170px;
 
   .colorName {
     letter-spacing: 3px;
@@ -38,16 +42,20 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    .functionBtn {
+    padding: 20px 10px;
+    .functionBtn,
+    .lockedBtn {
       font-size: 25px;
-      cursor: pointer;
       padding: 8px 8px 4px 8px;
-      @include selectable();
+      cursor: pointer;
+      transition: opacity 0.2s;
     }
-  }
-
-  .functionBtn:hover {
-    background: rgba($color: #000000, $alpha: 0.2);
+    .functionBtn {
+      opacity: 0;
+    }
+    .lockedBtn {
+      opacity: 1;
+    }
   }
 }
 
@@ -67,7 +75,21 @@
   transition: top 1.2s;
 }
 
-@media (max-width: 870px) {
+.column:hover {
+  .menu {
+    .functionBtn {
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+
+    .functionBtn:hover {
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+  }
+}
+
+@media (max-width: 900px) {
   .column {
     flex-direction: row;
   }

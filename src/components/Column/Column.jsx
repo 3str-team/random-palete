@@ -1,16 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { getBrightness } from "../../helpers/color";
+import React, { useState } from "react";
+import { getBrightness, getColorById } from "../../helpers/color";
+import { v4 as uuidv4 } from "uuid";
 import styles from "./Column.module.scss";
 
-const Column = ({
-  background = "#ffffff",
-  generateRandomColor,
-  mergeColors,
-}) => {
+const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
+  const [colors, setColors] = colorsState;
   const [isLock, setLock] = useState(false);
-  const [columnBackground, setColumnBackground] = useState(background);
+  const [columnBackground, setColumnBackground] = useState(
+    getColorById(colors, id)
+  );
 
   const lockToggle = (event) => {
     setLock(!isLock);
@@ -22,7 +20,7 @@ const Column = ({
     setTimeout(() => {
       event.target.parentNode.classList.remove("copied");
     }, 1000);
-    navigator.clipboard.writeText(columnBackground);
+    navigator.clipboard.writeText(columnBackground.hex);
     event.stopPropagation();
   };
 
@@ -32,18 +30,14 @@ const Column = ({
   };
 
   const setRandomColor = () => {
-    setColor(generateRandomColor());
+    setColor({ id: uuidv4(), hex: generateRandomColor() });
   };
-
-  useEffect(() => {
-    setColor(background);
-  }, [background]);
 
   const functionBtns = [
     {
       id: 1,
       icon: isLock ? (
-        <i className="bx bxs-lock-alt"></i>
+        <i className={"bx bxs-lock-alt"}></i>
       ) : (
         <i className="bx bxs-lock-open-alt"></i>
       ),
@@ -53,7 +47,22 @@ const Column = ({
       id: 2,
       icon: <i className="bx bxs-add-to-queue"></i>,
       func: (event) => {
-        mergeColors(columnBackground);
+        addMergingColors(columnBackground);
+        event.stopPropagation();
+      },
+    },
+    {
+      id: 3,
+      icon: <i className="bx bxs-trash-alt"></i>,
+      func: (event) => {
+        if (isLock) return;
+        const newColors = [];
+        [...colors].forEach((color) => {
+          if (color.id !== id) {
+            newColors.push(color);
+          }
+        });
+        setColors(newColors);
         event.stopPropagation();
       },
     },
@@ -63,20 +72,25 @@ const Column = ({
     <div
       className={styles.column}
       style={{
-        background: columnBackground,
-        color: getBrightness(columnBackground) <= 0.5 ? "white" : "black",
+        background: columnBackground.hex,
+        color: getBrightness(columnBackground.hex) <= 0.5 ? "white" : "black",
       }}
       onClick={setRandomColor}
     >
       <h2 className={styles.colorName} onClick={copyColor}>
-        {columnBackground}
+        {columnBackground.hex}
       </h2>
 
       <ul className={styles.menu}>
         {functionBtns.map((btn) => {
           return (
             <li key={btn.id} className={styles.functionBtnWrapper}>
-              <span className={styles.functionBtn} onClick={btn.func}>
+              <span
+                className={
+                  isLock && btn.id === 1 ? styles.lockedBtn : styles.functionBtn
+                }
+                onClick={btn.func}
+              >
                 {btn.icon}
               </span>
             </li>
