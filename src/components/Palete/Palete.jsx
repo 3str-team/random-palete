@@ -18,10 +18,11 @@ const Palete = () => {
   const [mergingColors, setMergingColors] = useState([]);
 
   const updateColors = () => {
-    let newColors = colors.map((color) => {
-      return { id: color.id, hex: generateRandomColor() };
-    });
-    setColors(newColors);
+    setColors(
+      colors.map((color) => {
+        return { id: color.id, hex: generateRandomColor() };
+      })
+    );
   };
 
   const addColor = (color) => {

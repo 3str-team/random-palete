@@ -30,10 +30,6 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
     setColumnBackground(color);
   };
 
-  const setRandomColor = () => {
-    setColor({ id: uuidv4(), hex: generateRandomColor() });
-  };
-
   useEffect(() => {
     setColor(getColorById(colors, id));
   }, [getColorById(colors, id)]);
@@ -80,7 +76,9 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
         background: columnBackground.hex,
         color: getBrightness(columnBackground.hex) <= 0.5 ? "white" : "black",
       }}
-      onClick={setRandomColor}
+      onClick={() => {
+        setColor({ id: uuidv4(), hex: generateRandomColor() });
+      }}
     >
       <h2 className={styles.colorName} onClick={copyColor}>
         {columnBackground.hex}

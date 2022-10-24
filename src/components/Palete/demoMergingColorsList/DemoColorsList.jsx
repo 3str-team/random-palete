@@ -6,11 +6,7 @@ const DemoColorsList = ({ colorsState }) => {
   const [colors, setColors] = colorsState;
 
   const deleteMergingColorById = (id) => {
-    const newColors = [];
-    for (const color of colors) {
-      if (color.id !== id) newColors.push(color);
-      setColors(newColors);
-    }
+    setColors(colors.filter((color) => color.id !== id));
   };
 
   return (
