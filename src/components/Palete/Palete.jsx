@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import DemoColorsList from "./demoMergingColorsList/DemoColorsList";
 import MergeButton from "./demoMergingColorsList/MergeButton/MergeButton";
 import RefreshButton from "../RefreshButton/RefreshButton";
+import { Reorder } from "framer-motion";
 import styles from "./Palete.module.scss";
 
 const Palete = () => {
@@ -47,7 +48,13 @@ const Palete = () => {
 
   return (
     <div className={styles.palete}>
-      <section className={styles.columns}>
+      <Reorder.Group
+        as="section"
+        className={styles.columns}
+        axis="x"
+        values={colors}
+        onReorder={setColors}
+      >
         {colors.map((color) => {
           return (
             <Column
@@ -59,7 +66,7 @@ const Palete = () => {
             />
           );
         })}
-      </section>
+      </Reorder.Group>
 
       <div className={styles.tools}>
         <div

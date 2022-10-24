@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { getBrightness, getColorById } from "../../helpers/color";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./Column.module.scss";
 import { useEffect } from "react";
+import { Reorder } from "framer-motion";
+import styles from "./Column.module.scss";
 
 const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
   const [colors, setColors] = colorsState;
@@ -46,6 +47,13 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
     },
     {
       id: 2,
+      icon: <i className="bx bx-refresh" style={{fontSize: 30}}></i>,
+      func: () => {
+        setColor({ id: uuidv4(), hex: generateRandomColor() });
+      },
+    },
+    {
+      id: 3,
       icon: <i className="bx bxs-add-to-queue"></i>,
       func: (event) => {
         addMergingColors(columnBackground);
@@ -53,31 +61,23 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
       },
     },
     {
-      id: 3,
+      id: 4,
       icon: <i className="bx bxs-trash-alt"></i>,
       func: (event) => {
         if (isLock) return;
-        const newColors = [];
-        [...colors].forEach((color) => {
-          if (color.id !== id) {
-            newColors.push(color);
-          }
-        });
-        setColors(newColors);
+        setColors(colors.filter((color) => color.id !== id));
         event.stopPropagation();
       },
     },
   ];
 
   return (
-    <div
+    <Reorder.Item
+      value={getColorById(colors, id)}
       className={styles.column}
       style={{
         background: columnBackground.hex,
         color: getBrightness(columnBackground.hex) <= 0.5 ? "white" : "black",
-      }}
-      onClick={() => {
-        setColor({ id: uuidv4(), hex: generateRandomColor() });
       }}
     >
       <h2 className={styles.colorName} onClick={copyColor}>
@@ -93,6 +93,7 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
                   isLock && btn.id === 1 ? styles.lockedBtn : styles.functionBtn
                 }
                 onClick={btn.func}
+                {...btn.other}
               >
                 {btn.icon}
               </span>
@@ -100,7 +101,7 @@ const Column = ({ colorsState, id, generateRandomColor, addMergingColors }) => {
           );
         })}
       </ul>
-    </div>
+    </Reorder.Item>
   );
 };
 
