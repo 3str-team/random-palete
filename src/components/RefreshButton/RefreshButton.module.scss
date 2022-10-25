@@ -7,3 +7,10 @@
   background: #482395;
   cursor: pointer;
 }
+
+@media (max-width: 900px) {
+  .refresh {
+    transform-origin: center center;
+    transform: scale(0.7);
+  }
+}

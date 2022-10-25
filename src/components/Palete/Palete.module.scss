@@ -19,7 +19,7 @@
   .tools {
     flex: 0 0 auto;
     display: flex;
-    padding: 0 30px 30px 30px;
+    padding: 0 30px;
     align-items: center;
     justify-content: space-between;
     height: 100px;
@@ -38,10 +38,18 @@
 
 @media (max-width: 900px) {
   .palete {
-    // justify-content: space-evenly;
     gap: 0;
+    .columns {
+      flex-direction: column;
+      height: 90vh;
+    }
+
+    .tools {
+      height: 10vh;
+    }
   }
-  .columns {
-    flex-direction: column;
+  .merge {
+    transform-origin: center center;
+    transform: scale(0.7);
   }
 }

@@ -7,6 +7,7 @@ import MergeButton from "./demoMergingColorsList/MergeButton/MergeButton";
 import RefreshButton from "../RefreshButton/RefreshButton";
 import { Reorder } from "framer-motion";
 import styles from "./Palete.module.scss";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 
 const Palete = () => {
   const [colors, setColors] = useState([
@@ -17,6 +18,7 @@ const Palete = () => {
     { id: uuidv4(), hex: "#ffffff" },
   ]);
   const [mergingColors, setMergingColors] = useState([]);
+  const clientWindowWidth = useWindowWidth();
 
   const updateColors = () => {
     setColors(
@@ -51,7 +53,7 @@ const Palete = () => {
       <Reorder.Group
         as="section"
         className={styles.columns}
-        axis="x"
+        axis={clientWindowWidth > 900 ? "x" : "y"}
         values={colors}
         onReorder={setColors}
       >
